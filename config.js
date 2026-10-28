@@ -33,9 +33,9 @@ window.CONFIG = {
 
   // The three numbers under the music box (add, remove or rename freely)
   stats: [
-    { value: "100", label: "Humor" },
+    { value: "3", label: "Brain Cells" },
     { value: "1",   label: "Friends" },
-    { value: "2",   label: "Projects" }
+    { value: "1",   label: "Projects" }
   ],
 
   // Buttons. "open" = opens the link, "copy" = copies the text to clipboard.
