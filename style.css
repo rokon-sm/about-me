@@ -1,0 +1,176 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --text: #e9e6ee;
+  --muted: #a9a4b4;
+  --card: rgba(8, 6, 14, 0.78);
+  --line: rgba(255, 255, 255, 0.09);
+}
+
+html, body {
+  height: 100%;
+  background: #000;
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- background ---------- */
+#bg {
+  position: fixed; inset: -40px; z-index: 0;     /* oversized so blurred edges stay hidden */
+  background-size: cover; background-position: center;
+  filter: blur(var(--bg-blur, 8px));
+}
+#bg video { width: 100%; height: 100%; object-fit: cover; }
+#bg-shade { position: fixed; inset: 0; z-index: 1; background: rgba(0, 0, 0, 0.35); }
+
+/* ---------- splash ---------- */
+#splash {
+  position: fixed; inset: 0; z-index: 100;
+  background: #000;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; user-select: none;
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(.7, 0, .3, 1), filter 0.9s ease;
+}
+#splash-text {
+  font-size: 1.15rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: #cfcfd6; animation: pulse 2.2s ease-in-out infinite;
+}
+#splash.open { opacity: 0; transform: scale(1.35); filter: blur(10px); pointer-events: none; }
+@keyframes pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+/* ---------- card ---------- */
+#card {
+  position: relative; z-index: 2;
+  width: min(540px, calc(100vw - 28px));
+  max-height: calc(100vh - 28px);
+  margin: 0 auto; top: 50%; transform: translateY(-50%);
+  padding: 38px 30px 34px;
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+#card::before {            /* faint glow behind the avatar */
+  content: ""; position: absolute; top: -90px; left: 50%; width: 320px; height: 320px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(190, 195, 210, 0.2), transparent 65%);
+  pointer-events: none;
+}
+
+/* reveal animation: card rises, then each child fades in one after another */
+#card.hidden { opacity: 0; transform: translateY(-46%) scale(0.94); }
+#card { transition: opacity 0.9s ease 0.25s, transform 0.9s cubic-bezier(.2, .8, .2, 1) 0.25s; }
+#card > * { opacity: 0; transform: translateY(14px); }
+#card.show > * { animation: rise 0.7s cubic-bezier(.2, .8, .2, 1) forwards; }
+#card.show > :nth-child(1) { animation-delay: 0.55s; }
+#card.show > :nth-child(2) { animation-delay: 0.65s; }
+#card.show > :nth-child(3) { animation-delay: 0.75s; }
+#card.show > :nth-child(4) { animation-delay: 0.85s; }
+#card.show > :nth-child(5) { animation-delay: 0.95s; }
+#card.show > :nth-child(6) { animation-delay: 1.05s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+
+#avatar {
+  position: relative;
+  width: 120px; height: 120px; border-radius: 50%;
+  object-fit: cover; object-position: center 30%;
+  border: 2px solid rgba(200, 205, 215, 0.25);
+  box-shadow: 0 0 22px rgba(190, 195, 210, 0.12);
+  opacity: 0.7;                       /* a bit transparent until hovered */
+  user-select: none; cursor: pointer;
+}
+#avatar:hover {
+  opacity: 1;
+  transform: scale(1.08) rotate(-2deg);
+  border-color: rgba(225, 228, 235, 0.65);
+  box-shadow: 0 0 34px rgba(205, 210, 222, 0.55), 0 0 80px rgba(190, 195, 210, 0.25);
+}
+#card.show #avatar { animation: avatarIn 0.7s cubic-bezier(.2, .8, .2, 1) 0.55s forwards; }
+@keyframes avatarIn { to { opacity: 0.7; transform: none; } }
+#card.done #avatar {                  /* after the intro, hover transitions take over */
+  animation: none; opacity: 0.7; transform: none;
+  transition: transform 0.35s cubic-bezier(.2, .8, .2, 1), opacity 0.35s, box-shadow 0.35s, border-color 0.35s;
+}
+#card.done #avatar:hover { opacity: 1; transform: scale(1.08) rotate(-2deg); }
+#name { margin-top: 18px; font-size: 2rem; font-weight: 700; letter-spacing: 0.01em; color: #d9d6df; text-align: center; }
+#bio { margin-top: 12px; font-size: 0.98rem; color: var(--muted); text-align: center; line-height: 1.5; }
+
+/* ---------- music ---------- */
+#music {
+  width: 100%; margin-top: 26px; padding: 16px 18px;
+  text-align: center; cursor: pointer; user-select: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line); border-radius: 14px;
+  transition: background 0.2s;
+}
+#music:hover { background: rgba(255, 255, 255, 0.09); }
+#music span { display: block; font-size: 0.9rem; color: var(--muted); margin-bottom: 8px; }
+#music strong { font-size: 1.12rem; font-weight: 500; color: #fff; }
+#music.paused strong { opacity: 0.5; }
+
+/* ---------- stats ---------- */
+#stats { display: flex; gap: 28px; margin-top: 22px; justify-content: center; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat b { display: block; font-size: 1.45rem; color: #fff; }
+.stat span { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- icon buttons ---------- */
+#links { display: flex; gap: 14px; margin-top: 26px; }
+.icon {
+  --hover: #333;
+  position: relative;
+  width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  color: #fff; cursor: pointer;
+  transition: background 0.22s, transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+}
+.icon svg { width: 21px; height: 21px; }
+.icon:hover, .icon:focus-visible {
+  background: var(--hover); border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--hover) 55%, transparent);
+  outline: none;
+}
+.icon[data-key="github"]    { --hover: #24292f; }   /* GitHub dark */
+.icon[data-key="instagram"] { --hover: #d6249f; }   /* Instagram pink */
+.icon[data-key="discord"]   { --hover: #5865f2; }   /* Discord blue */
+.icon[data-key="mail"]      { --hover: #8b3dff; }   /* mail purple */
+.icon[data-key="github"]:hover { background: #2b3137; box-shadow: 0 8px 22px rgba(255, 255, 255, 0.12); }
+
+/* tooltip */
+.icon::after {
+  content: attr(data-tip);
+  position: absolute; bottom: calc(100% + 12px); left: 50%;
+  transform: translate(-50%, 6px);
+  padding: 6px 10px; border-radius: 8px;
+  background: #111018; color: #fff; font-size: 0.78rem; white-space: nowrap;
+  border: 1px solid var(--line);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s;
+}
+.icon:hover::after, .icon:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- toast ---------- */
+#toast {
+  position: fixed; left: 50%; bottom: 34px; z-index: 200;
+  transform: translate(-50%, 30px); opacity: 0;
+  padding: 11px 20px; border-radius: 999px;
+  background: rgba(20, 18, 28, 0.95); color: #fff; font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 420px) {
+  #card { padding: 30px 20px 28px; }
+  #name { font-size: 1.7rem; }
+}
