@@ -45,4 +45,5 @@ Deploy to any static hosting provider, such as [Vercel](https://vercel.com/) or 
 
 ## Credits
 
-Code written by Claude (Anthropic) based on my instructions.
+- Inspired by [Mlad's page](https://eolthar.gt.tc/).
+- Code written by Claude (Anthropic) based on my instructions.
