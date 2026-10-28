@@ -40,9 +40,9 @@ window.CONFIG = {
 
   // Buttons. "open" = opens the link, "copy" = copies the text to clipboard.
   links: {
-    github:    { type: "open", value: "https://github.com/your-username",    tooltip: "GitHub" },
-    instagram: { type: "open", value: "https://instagram.com/your-username", tooltip: "Instagram" },
-    discord:   { type: "copy", value: "your_discord_username",               tooltip: "Copy Discord username", toast: "Discord username copied!" },
-    mail:      { type: "copy", value: "you@example.com",                     tooltip: "Copy email address",    toast: "Email address copied!" }
+    github:    { type: "open", value: "https://github.com/rokon-sm",    tooltip: "GitHub" },
+    instagram: { type: "open", value: "https://instagram.com/smrok.on", tooltip: "Instagram" },
+    discord:   { type: "copy", value: "sm_rokon",                       tooltip: "Copy Discord username", toast: "Discord username copied!" },
+    mail:      { type: "copy", value: "smrokon@proton.me",              tooltip: "Copy email address",    toast: "Email address copied!" }
   }
 };
