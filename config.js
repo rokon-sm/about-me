@@ -14,7 +14,7 @@ window.CONFIG = {
 
   // Main profile
   name: "Rokon",
-  bio: "Just Testing!",
+  bio: "Hey there, I'm Rokon, a student from Bangladesh trying to figure things out as I go. I'm learning new things, exploring life, and slowly discovering what I want to make of it. If you're reading this, welcome. You're here at the very beginning of my story.",
   avatar: "assets/avatar.jpg",
   favicon: "assets/favicon.png",   // small icon in the browser tab
 
